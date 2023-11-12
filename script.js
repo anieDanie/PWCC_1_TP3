@@ -1,12 +1,11 @@
 /**
  * TP3
- * Dernière mise-à-jour : 11-11-2023 (22:15)
- * EXO 1 à 7 : terminés
+ * Dernière mise-à-jour : 12-11-2023 (11: 28)
+ * EXO 1 à 9 : terminés
  * 
  * Remarques:
- *      Voir si je peux retravailler les fonctions de recherche dans liste (surtout celle par clé-valeur)
- *      après EXO 8 et 9
- *      Exemple intéressant de décomposition objet (pour utiliser reduce()): voir ligne 460 cette version
+ *      Fin première version programme
+ *      Revoir en entier pour améliorations
  */
 
 // DONNÉES
@@ -165,13 +164,12 @@ function exo6(){
 document.getElementById('button-6').addEventListener('click', exo7);
 
 function getMessageForExo7(input){
-    console.log(input)
 
         // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
         if(input === ''){
             return 'chaîne vide'
         } else if(containsOnlyLetters(input)){
-            return '' + findCityByPop(cities, input);
+            return findCityByPop(cities, input);
         }        
 }
 
@@ -184,9 +182,48 @@ function exo7(){
 // France   -> aucune ville trouvée
 
 // 8 - Pays d'origine
+document.getElementById('button-7').addEventListener('click', exo8);
+
+function getMessageForExo8(input){
+        
+        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+        if(input === ''){
+            return 'chaîne vide'
+        } else if(containsOnlyLetters(input)){
+            return findCountryByPersonName(cities, persons, input);
+        }                
+}
+
+function exo8(){
+    const input = document.getElementById('input-3').value;
+    document.getElementById('result-box-3').innerHTML = getMessageForExo8(input);
+}
+// TESTS UNITAIRES INTERFACE
+//Djaffar Bensetti  -> Algerie
+//Marie Antoinette  -> aucune personne trouvée
 
 // 9 - Nombre de personnes dans un pays
+document.getElementById('button-8').addEventListener('click', exo9);
 
+function getMessageForExo9(input){
+    console.log(input)
+        
+        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+        if(input === ''){
+            return 'chaîne vide'
+        } else if(containsOnlyLetters(input)){
+            return '' + findPersonCountByCountry(cities, persons, input);
+        }                
+}
+
+function exo9(){
+    const input = document.getElementById('input-4').value;
+    document.getElementById('result-box-4').innerHTML = getMessageForExo9(input);
+}
+// TESTS UNITAIRES INTERFACE
+// Canada   -> 3
+// Mexique  -> 0
+// France   -> 0
 
 // FONCTIONS pour logique application
 
@@ -388,19 +425,34 @@ function findAt(list, index, propertyName){
 
 /**
  * Convertit une chaîne de lettres selon le format str de
- * la base de données (Aaaaaa)
+ * la base de données (Aaaaaa) ou (Aaaaaa Bbbbbb) ou (CC), si
+ * mot de 2 lettres ou moins.
  * Prend en paramètre une chaîne de caractères.
  * Retourne une chaîne de caractères (type String)
+ * NOTA: cette fonction est spécifique au format actuel des données dans BD
  */
 function standardizeStrData(str){
-    newStr = str.toLowerCase().trim();
-    return newStr[0].toUpperCase() + newStr.substring(1);
+    let words = str.trim().split(' ');
+    let newWords = [];
+    words.forEach((word) => {
+        let newWord = word.toLowerCase();
+        if(word.length <= 2){
+            newWord = newWord.toUpperCase();
+        } else {
+            newWord = newWord[0].toUpperCase() + newWord.substring(1);
+        }
+        newWords.push(newWord);
+    })
+    return newWords.join(' ');
 }
-//console.log(standardizeCityName('oran'));
-//console.log(standardizeCityName('ORAN'));
-//console.log(standardizeCityName('oRAN'));
-//console.log(standardizeCityName('ORAN  '));
-//console.log(standardizeCityName('  ORAN  '));
+//console.log(standardizeStrData('oran'));
+//console.log(standardizeStrData('ORAN'));
+//console.log(standardizeStrData('oRAN'));
+//console.log(standardizeStrData('ORAN  '));
+//console.log(standardizeStrData('  ORAN  '));
+//console.log(standardizeStrData('  djaffar bensetti  '));
+//console.log(standardizeStrData('  DJAFFAR BENSETTI  '));
+
 
 /**
  * Recherche le pays associé au nom d'une ville dans les données.
@@ -511,7 +563,7 @@ function findCityByPop(list, countryName){
 
     const countryNameSTD = standardizeStrData(countryName);
     const indexList = getAllMatchingRecords(list, 'country', countryNameSTD);
-
+    
     if(indexList.length !== 0){
         const maxPop = findMaxValue(list, indexList, 'population');
         //console.log(maxPop)
@@ -522,3 +574,45 @@ function findCityByPop(list, countryName){
 }
 //console.log(findCityByPop(cities, 'Canada')); // Affiche Toronto
 //console.log(findCityByPop(cities, 'France')); // Affiche aucune ville trouvée
+
+function findCountryByPersonName(list1, list2, personName){
+    //console.log(personName)
+
+    const personNameSTD = standardizeStrData(personName);
+    const indexList = getAllMatchingRecords(list2, 'name', personNameSTD);
+
+    if(indexList.length !== 0){
+        if(indexList.length === 1){
+            return findAt(list1, indexList[0], 'country');
+        } else {
+            console.log('Plusieurs enregistrements correspondent aux critères de recherche');
+        }
+    }
+    return 'aucune personne trouvée';
+}
+//console.log(findCountryByPersonName(cities, persons, 'Djaffar Bensetti'));
+//console.log(findCountryByPersonName(cities, persons, 'dj Pope'));
+//console.log(findCountryByPersonName(cities, persons, 'Marie Antoinette'));
+
+function findPersonCountByCountry(list1, list2, countryName){
+    
+    const countryNameSTD = standardizeStrData(countryName);
+    const indexList = getAllMatchingRecords(list1, 'country', countryNameSTD);
+
+    if(indexList.length !== 0){
+        let sum = 0;
+        indexList.forEach((city) => {
+            list2.map((person) => {
+                if(person.city === list1[city].name){
+                    sum++
+                }
+            })
+        });
+        return sum;
+    }
+    return 0;
+}
+//console.log(findPersonCountByCountry(cities, persons, 'Canada'));
+//console.log(findPersonCountByCountry(cities, persons, 'Mexique'));
+//console.log(findPersonCountByCountry(cities, persons, 'France'));
+
