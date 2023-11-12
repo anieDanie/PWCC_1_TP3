@@ -1,8 +1,12 @@
 /**
  * TP3
- * Dernière mise-à-jour : 11-11-2023 (16:08)
- * EXO 1 et 2 : terminés
- * Travail sur fonctions pour manipuler les listes d'objets (contiennent doublons) en cours
+ * Dernière mise-à-jour : 11-11-2023 (22:15)
+ * EXO 1 à 7 : terminés
+ * 
+ * Remarques:
+ *      Voir si je peux retravailler les fonctions de recherche dans liste (surtout celle par clé-valeur)
+ *      après EXO 8 et 9
+ *      Exemple intéressant de décomposition objet (pour utiliser reduce()): voir ligne 460 cette version
  */
 
 // DONNÉES
@@ -95,34 +99,89 @@ function exo3(){
 //12 et -10     -> Entrée invalide
 
 // 4 - Pays d'une ville
-
 document.getElementById('button-3').addEventListener('click', exo4);
 
 function getMessageForExo4(input){
-    console.log(input)
 
-    // Valider qu'il s'agit d'une chaîne de caractère ou une chaîne de caractères vide
-    if(containsOnlyLetters(input)){
-        console.log('dans le if')
+    // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+    if(input === ''){
+        return 'chaîne vide'
+    } else if(containsOnlyLetters(input)){
+        return findCountryByCityName(cities, input);
     }
-
-    // fonction pour rechercher dans la liste des villes: par ville
-    // retourne le pays
 }
 
 function exo4(){
-    console.log('exo4')
     const input = document.getElementById('input-3').value;
     document.getElementById('result-box-3').innerHTML = getMessageForExo4(input);
 }
 // TESTS UNITAIRES INTERFACE
-
+// Oran     -> Algerie
+// Paris    -> ville non trouvée
 
 // 5 - Nombre de villes d'un pays
+document.getElementById('button-4').addEventListener('click', exo5);
+
+function getMessageForExo5(input){
+
+    // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+    if(input === ''){
+        return 'chaîne vide'
+    } else if(containsOnlyLetters(input)){
+        return '' + findCityCountByCountry(cities, input);
+    }
+}
+
+function exo5(){
+    const input = document.getElementById('input-4').value;
+    document.getElementById('result-box-4').innerHTML = getMessageForExo5(input);
+}
+// TESTS UNITAIRES INTERFACE
+//Canada    -­­> 3
+//France    -> 0
 
 // 6 - Population d'un pays
+document.getElementById('button-5').addEventListener('click', exo6);
+
+function getMessageForExo6(input){
+
+        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+        if(input === ''){
+            return 'chaîne vide'
+        } else if(containsOnlyLetters(input)){
+            return '' + getTotalPopulation(cities, input);
+        }
+}
+
+function exo6(){
+    const input = document.getElementById('input-1').value;
+    document.getElementById('result-box-1').innerHTML = getMessageForExo6(input);
+}
+// TESTS UNITAIRES INTERFACE
+// Canada   -­> 5219553
+// France   -> 0
 
 // 7 - Plus grande ville d'un pays
+document.getElementById('button-6').addEventListener('click', exo7);
+
+function getMessageForExo7(input){
+    console.log(input)
+
+        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+        if(input === ''){
+            return 'chaîne vide'
+        } else if(containsOnlyLetters(input)){
+            return '' + findCityByPop(cities, input);
+        }        
+}
+
+function exo7(){
+    const input = document.getElementById('input-2').value;
+    document.getElementById('result-box-2').innerHTML = getMessageForExo7(input);
+}
+// TESTS UNITAIRES INTERFACE
+// Canada   -> Toronto
+// France   -> aucune ville trouvée
 
 // 8 - Pays d'origine
 
@@ -280,17 +339,17 @@ function searchByProperty(list, propertyName, element){
  * aux critères de recherche spécifiés.
  * Prend en paramètre une liste d'enregistrements, la propriété sur laquelle
  * il faut effectuer la rechercher et l'élément recherché.
- * À noter: le type de la donnée l'élément recherché(passé en paramètre) doit correspondre 
+ * À noter: le type de la donnée de l'élément recherché(passé en paramètre) doit correspondre 
  * au type spécifié dans la base de données.
  * Retourne une liste qui contient les indices des enregistrements (objets) qui rencontrent
  * les critères de recherche
  */
 function getAllMatchingRecords(list, propertyName, searchedElement){
-    console.log(searchedElement)
+    //console.log(searchedElement)
 
     let indexList = [];
 
-    for (arr of Object.entries(list)){
+    for (let arr of Object.entries(list)){
         //console.log(arr)
         if(arr[1][propertyName] === searchedElement){            
             //console.log('oui!') // string
@@ -300,11 +359,11 @@ function getAllMatchingRecords(list, propertyName, searchedElement){
     }
     return indexList;
 }
-console.log(getAllMatchingRecords(cities, 'name', 'Oran')); // affiche Array [ 6 ]
-console.log(getAllMatchingRecords(cities, 'population', 8034649)); // affiche Array [ 3, 4 ]
-console.log(getAllMatchingRecords(cities, 'country', 'Canada')); // affiche Array(3) [ 0, 1, 2 ]
-console.log(getAllMatchingRecords(persons, 'name', 'DJ Pope')); // affiche Array [ 4 ]
-console.log(getAllMatchingRecords(persons, 'city', 'Vancouver')); // affiche Array [ 1, 2 ]
+//console.log(getAllMatchingRecords(cities, 'name', 'Oran')); // affiche Array [ 6 ]
+//console.log(getAllMatchingRecords(cities, 'population', 8034649)); // affiche Array [ 3, 4 ]
+//console.log(getAllMatchingRecords(cities, 'country', 'Canada')); // affiche Array(3) [ 0, 1, 2 ]
+//console.log(getAllMatchingRecords(persons, 'name', 'DJ Pope')); // affiche Array [ 4 ]
+//console.log(getAllMatchingRecords(persons, 'city', 'Vancouver')); // affiche Array [ 1, 2 ]
 
 //console.log(cities)
 //console.log(cities[0])
@@ -321,3 +380,145 @@ function searchByProperty(propertyName){
 }
 */
 //searchByProperty('name');
+
+function findAt(list, index, propertyName){
+    return list[index][propertyName];
+}
+//console.log(findAt(cities, 6, 'country')) // Affiche Algerie
+
+/**
+ * Convertit une chaîne de lettres selon le format str de
+ * la base de données (Aaaaaa)
+ * Prend en paramètre une chaîne de caractères.
+ * Retourne une chaîne de caractères (type String)
+ */
+function standardizeStrData(str){
+    newStr = str.toLowerCase().trim();
+    return newStr[0].toUpperCase() + newStr.substring(1);
+}
+//console.log(standardizeCityName('oran'));
+//console.log(standardizeCityName('ORAN'));
+//console.log(standardizeCityName('oRAN'));
+//console.log(standardizeCityName('ORAN  '));
+//console.log(standardizeCityName('  ORAN  '));
+
+/**
+ * Recherche le pays associé au nom d'une ville dans les données.
+ * Prend en paramètre la liste et l'élément recherché.
+ * Retourne le pays (type string)
+ */
+function findCountryByCityName(list, cityName){
+
+    const cityNameSTD = standardizeStrData(cityName);
+    const indexList = getAllMatchingRecords(list, 'name', cityNameSTD);
+
+    if(indexList.length === 1){
+        return findAt(cities, indexList[0], 'country');
+    } else if (indexList.length === 0){
+        return 'ville non trouvée';
+    } else {
+        return `plus d'un enregistrement pour la ville spécifiée`
+    }
+}
+//console.log(findCountryByCityName(cities, 'Oran')); // Affiche Algerie
+//console.log(findCountryByCityName(cities, 'Paris')); // Affiche Algerie
+
+/**
+ * Énumère les villes associées au nom d'un pays dans les données.
+ * Prend en paramètre la liste et l'élément recherché.
+ * Retourne le nombre de villes (type Number)
+ */
+function findCityCountByCountry(list, countryName){
+
+    const countryNameSTD = standardizeStrData(countryName);
+    const indexList = getAllMatchingRecords(list, 'country', countryNameSTD);
+    return indexList.length;
+}
+//console.log(findCityCountByCountry(cities, 'Canada'));
+//console.log(findCityCountByCountry(cities, 'France'));
+
+/**
+ * Dénombre la population totale d'un pays à partir des données.
+ * Prend en paramètre la liste et l'élément recherché.
+ * Retourne le nombre d'individus (type Number)
+ */
+function getTotalPopulation(list, countryName){
+
+    const countryNameSTD = standardizeStrData(countryName);
+    const indexList = getAllMatchingRecords(list, 'country', countryNameSTD);
+    
+    let sum = 0;
+    indexList.forEach(index => {
+        sum += list[index].population;
+    })
+    return sum;    
+}
+//console.log(getTotalPopulation(cities, 'Canada')); // Affiche 5219553
+//console.log(getTotalPopulation(cities, 'France')); // Affiche 0
+
+
+/*
+// Exemple intéressant : décomposer un objet
+const traveler = [
+    { description: 'Senior', Amount: 50 },
+    { description: 'Senior', Amount: 50 },
+    { description: 'Adult', Amount: 75 },
+    { description: 'Child', Amount: 35 },
+    { description: 'Infant', Amount: 25 },
+  ];
+  
+console.log(traveler.reduce((n, {Amount}) => n + Amount, 0));
+*/
+
+/**
+ * Repère la valeur maximale d'une propriété dans un ensemble de valeurs données
+ * Prend en paramètre une liste (les données), une liste d'enregistrements et 
+ * le nom de la propriété pour laquelle les valeurs sont comparées.
+ * Retourne la valeur la plus élevée parmi les valeurs comparées (type Number)
+ */
+function findMaxValue(list, indexList, propertyName){
+
+    let maxValue = list[indexList[0]][propertyName];
+
+    indexList.forEach(item =>{
+        if(list[item][propertyName] > maxValue){
+            maxValue = list[item][propertyName]
+        }
+    })
+    return maxValue;
+}
+//console.log(findMaxValue(cities, [0,1,2], 'population'))// Affiche 2794356
+
+/**
+ * Recherche une valeur pour une propriété donnée selon un couple clé-valeur
+ */
+
+function findByKeyValuePair(list, requestedDataPropertyName, refDataPropertyName, refDataPropertyValue){
+    
+    const result = list.find(item => item[refDataPropertyName] === refDataPropertyValue);
+    //console.log(result[requestedDataPropertyName])
+    return result[requestedDataPropertyName];
+    
+}
+//console.log(findByKeyValuePair(cities, 'name', 'population', 2794356));
+
+/**
+ * Recherche la ville associée à une population donnée.
+ * Prend en paramètre la liste et l'élément recherché.
+ * Retourne le nom de la ville (type String)
+ */
+function findCityByPop(list, countryName){
+
+    const countryNameSTD = standardizeStrData(countryName);
+    const indexList = getAllMatchingRecords(list, 'country', countryNameSTD);
+
+    if(indexList.length !== 0){
+        const maxPop = findMaxValue(list, indexList, 'population');
+        //console.log(maxPop)
+        const city = findByKeyValuePair(list, 'name', 'population', maxPop);
+        return city;
+    }
+    return 'aucune ville trouvée'
+}
+//console.log(findCityByPop(cities, 'Canada')); // Affiche Toronto
+//console.log(findCityByPop(cities, 'France')); // Affiche aucune ville trouvée
