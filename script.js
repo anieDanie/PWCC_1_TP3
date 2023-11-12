@@ -1,11 +1,20 @@
 /**
  * TP3
- * Dernière mise-à-jour : 12-11-2023 (11: 28)
+ * Dernière mise-à-jour : 12/11/ 15:23
  * EXO 1 à 9 : terminés
  * 
  * Remarques:
- *      Fin première version programme
- *      Revoir en entier pour améliorations
+ *      (1) Fonction standardizeStrData n'existe plus dans cette version: 
+ *      c'est la méthode getAllMatchingRecords() qui définit le
+ *      format pour comparer les données des BD et les entrées saisies
+ *      par l'utilisateur: on compare des strings, en lettres majuscules,
+ *      lorsqu'il s'agit de mots.
+ *      (2) La recherche dans une liste se fait principalement par la biais
+ *      du numéro de l'enregistrement (indice de l'objet dans une liste),
+ *      lorsqu'il s'agit d'obtenir la valeur d'une propriété, via la fonction
+ *      findAt(). Il est aussi possible de faire une recherche par le biais
+ *      d'une paire clé-valeur dans une liste, via la fonction findByKeyValuePair(). 
+ *      (3) À faire : tests    
  */
 
 // DONNÉES
@@ -44,7 +53,7 @@ const persons = [
 
 ]
 
-// VUE
+// VUE et CONTRÔLEUR
 
 // 1 - Linker un script extérieur
 document.querySelector('#main-title').innerHTML = 'Travail Pratique III'
@@ -227,7 +236,7 @@ function exo9(){
 
 // FONCTIONS pour logique application
 
-// OPÉRATIONS SUR DES NOMBRES
+// UTILITAIRES
 /**
  * Valide si une chaîne de caractères est une valeur numérique.
  * Prend en paramètre une chaîne de caractères. Retourne un booléen.
@@ -294,8 +303,8 @@ function divides(divisor, dividend){
 /**
  * Calcule la somme d'une suite de termes (suite finie) qui se termine
  * avec un entier N.
- * Prend en paramètre une valeur numérique entière (type Number, validé par Number.isInteger()),
- * Retourne la somme (type Number)
+ * Prend en paramètre une valeur numérique entière (type Number, 
+ * validé par Number.isInteger()). Retourne la somme (type Number)
  * NOTA: somme vide est définie par 0
  */
 function sumOfFiniteSequenceOfTerms(n){
@@ -317,15 +326,9 @@ function sumOfFiniteSequenceOfTerms(n){
  * contenus dans une suite finie qui se termine avec un entier N. 
  * Prend en paramètre l'entier N qui définit la séquence de termes,
  * le diviseur commun des termes et une fonction pour sélectionner
- * les multiples.
- * retourne une valeur numérique(type Number)
+ * les multiples. Retourne une valeur numérique(type Number)
  * */
 function sumOfMultiplesInFiniteSequenceOfTerms(n, d, selectFunc){
-    //console.log('sumOfTerms')
-    //console.log(n);
-    //console.log(d);
-    //console.log(selectFunc);
-
     let s = 0;
 
     for (let i = 0; i <= n; i++){
@@ -340,9 +343,6 @@ function sumOfMultiplesInFiniteSequenceOfTerms(n, d, selectFunc){
 //console.log(sumOfMultiplesInFiniteSequenceOfTerms(-12,10, divides)) // affiche 0 (on entre pas dans la boucle for)
 //console.log(sumOfMultiplesInFiniteSequenceOfTerms(12,-10, divides)) // affiche 10 (seulement 10 est divisible par -10)
 
-
-// OPÉRATIONS SUR DES CHAÎNES DE CARACTÈRES
-
 /**
  * Valide si une chaîne de caractères ne contient que des caractères qui forment des mots.
  * Prend une chaîne de caractères en paramètre. Retourne un booléen.
@@ -352,46 +352,27 @@ function containsOnlyLetters(s){
     return /^[a-zA-ZÀ-ÿ-. ]*$/.test(s);
 }
 
-
-
-function searchByProperty(list, propertyName, element){
-    console.log(element)
-
-    for (obj of Object.values(list)){
-        console.log(obj)
-        if(obj[propertyName] === element){
-            
-            console.log('oui!') // string
-        }
-    }
-}
-//searchByProperty(cities, 'name', 'Oran'); // 1 enregistrement : indice 6
-//searchByProperty(cities, 'population', 8034649); // 2 enregistrements : indices 3 et 4
-//searchByProperty(cities, 'country', 'Canada'); // 3 enregistrements : indices 0,1,2
-//searchByProperty(persons, 'name', 'DJ Pope'); // 1 enregistrement : indice 4
-//searchByProperty(persons, 'city', 'Vancouver') // 2 enregistrements: indices 1 et 2
+// FONCTIONS LIÉES AUX LISTES D'OBJETS
 
 /**
  * Récupère les indices des enregistrements (objets) qui correspondent
  * aux critères de recherche spécifiés.
- * Prend en paramètre une liste d'enregistrements, la propriété sur laquelle
- * il faut effectuer la rechercher et l'élément recherché.
- * À noter: le type de la donnée de l'élément recherché(passé en paramètre) doit correspondre 
- * au type spécifié dans la base de données.
+ * Prend en paramètre une liste d'enregistrements, la propriété pour laquelle
+ * il faut effectuer la recherche et l'élément recherché.
  * Retourne une liste qui contient les indices des enregistrements (objets) qui rencontrent
- * les critères de recherche
+ * les critères de recherche.
+ * A NOTER: On compare 2 strings dans cette méthodes: les nombres sont convertis en string
+ * et les lettres sont en lettres majuscules.
  */
 function getAllMatchingRecords(list, propertyName, searchedElement){
-    //console.log(searchedElement)
 
     let indexList = [];
 
     for (let arr of Object.entries(list)){
-        //console.log(arr)
-        if(arr[1][propertyName] === searchedElement){            
-            //console.log('oui!') // string
-            indexList.push(Number(arr[0]))
-            //console.log(indexList)
+        if(arr[1][propertyName].toString().toUpperCase() 
+            === searchedElement.toString().toUpperCase().trim()){            
+            
+                indexList.push(Number(arr[0]))  
         }
     }
     return indexList;
@@ -401,68 +382,65 @@ function getAllMatchingRecords(list, propertyName, searchedElement){
 //console.log(getAllMatchingRecords(cities, 'country', 'Canada')); // affiche Array(3) [ 0, 1, 2 ]
 //console.log(getAllMatchingRecords(persons, 'name', 'DJ Pope')); // affiche Array [ 4 ]
 //console.log(getAllMatchingRecords(persons, 'city', 'Vancouver')); // affiche Array [ 1, 2 ]
+//console.log(getAllMatchingRecords(cities, 'country', '   Canada   ')); // affiche Array(3) [ 0, 1, 2 ]
 
-//console.log(cities)
-//console.log(cities[0])
-//console.log(cities[0].name)
 
-/*
-function searchByProperty(propertyName){
-    for(obj of Object.values(cities)){
-        console.log(obj); // objets
-        console.log(obj.name); // nom de la ville
-        console.log(obj[propertyName]); // nom de la ville
-    }
-
-}
-*/
-//searchByProperty('name');
-
+/**
+ * Recherche une valeur pour une propriété donnée selon le numéro
+ * de l'enregistrement (indice de l'objet dans la liste Array)
+ * Prend en paramètre les données, l'indice et le nom de la propriété.
+ * Retourne la valeur associée à la propriété pour l'enregistrement.
+ */
 function findAt(list, index, propertyName){
     return list[index][propertyName];
 }
 //console.log(findAt(cities, 6, 'country')) // Affiche Algerie
 
 /**
- * Convertit une chaîne de lettres selon le format str de
- * la base de données (Aaaaaa) ou (Aaaaaa Bbbbbb) ou (CC), si
- * mot de 2 lettres ou moins.
- * Prend en paramètre une chaîne de caractères.
- * Retourne une chaîne de caractères (type String)
- * NOTA: cette fonction est spécifique au format actuel des données dans BD
+ * Recherche une valeur pour une propriété donnée selon un couple clé-valeur.
+ * Prend en paramètre les données, le nom de la propriété pour la valeur recherchée,
+ * la clé et la valeur associées à la valeur recherchée.
+ * Retourne la valeur (type Number ou String, selon le type de la donnée dans la BD)
  */
-function standardizeStrData(str){
-    let words = str.trim().split(' ');
-    let newWords = [];
-    words.forEach((word) => {
-        let newWord = word.toLowerCase();
-        if(word.length <= 2){
-            newWord = newWord.toUpperCase();
-        } else {
-            newWord = newWord[0].toUpperCase() + newWord.substring(1);
-        }
-        newWords.push(newWord);
-    })
-    return newWords.join(' ');
-}
-//console.log(standardizeStrData('oran'));
-//console.log(standardizeStrData('ORAN'));
-//console.log(standardizeStrData('oRAN'));
-//console.log(standardizeStrData('ORAN  '));
-//console.log(standardizeStrData('  ORAN  '));
-//console.log(standardizeStrData('  djaffar bensetti  '));
-//console.log(standardizeStrData('  DJAFFAR BENSETTI  '));
 
+function findByKeyValuePair(list, requestedDataPropertyName, refDataPropertyName, refDataPropertyValue){
+    
+    const result = list.find(item => item[refDataPropertyName] === refDataPropertyValue);
+    //console.log(result[requestedDataPropertyName])
+    return result[requestedDataPropertyName];
+    
+}
+//console.log(findByKeyValuePair(cities, 'name', 'population', 2794356));
+
+/**
+ * Repère la valeur maximale d'une propriété dans un ensemble de valeurs.
+ * Prend en paramètre les données, la liste des enregistrements concernés et 
+ * le nom de la propriété pour laquelle les valeurs sont comparées.
+ * Retourne la valeur la plus élevée parmi les valeurs comparées (type Number)
+ */
+function findMaxValue(list, indexList, propertyName){
+
+    let maxValue = list[indexList[0]][propertyName];
+
+    indexList.forEach((index) =>{
+        if(list[index][propertyName] > maxValue){
+            maxValue = list[index][propertyName]
+        }
+    })
+    return maxValue;
+}
+//console.log(findMaxValue(cities, [0,1,2], 'population'))// Affiche 2794356
+
+// FONCTIONS POUR REQUÊTES DE RECHERCHE ET DE TRAITEMENT DE DONNÉES (dans les listes)
 
 /**
  * Recherche le pays associé au nom d'une ville dans les données.
- * Prend en paramètre la liste et l'élément recherché.
- * Retourne le pays (type string)
+ * Prend en paramètre les données et le nom de la ville.
+ * Retourne le nom du pays (type string)
  */
 function findCountryByCityName(list, cityName){
 
-    const cityNameSTD = standardizeStrData(cityName);
-    const indexList = getAllMatchingRecords(list, 'name', cityNameSTD);
+    const indexList = getAllMatchingRecords(list, 'name', cityName);
 
     if(indexList.length === 1){
         return findAt(cities, indexList[0], 'country');
@@ -477,27 +455,25 @@ function findCountryByCityName(list, cityName){
 
 /**
  * Énumère les villes associées au nom d'un pays dans les données.
- * Prend en paramètre la liste et l'élément recherché.
+ * Prend en paramètre les données et le nom du pays.
  * Retourne le nombre de villes (type Number)
  */
 function findCityCountByCountry(list, countryName){
 
-    const countryNameSTD = standardizeStrData(countryName);
-    const indexList = getAllMatchingRecords(list, 'country', countryNameSTD);
+    const indexList = getAllMatchingRecords(list, 'country', countryName);
     return indexList.length;
 }
-//console.log(findCityCountByCountry(cities, 'Canada'));
-//console.log(findCityCountByCountry(cities, 'France'));
+//console.log(findCityCountByCountry(cities, 'Canada')); // Affiche 3
+//console.log(findCityCountByCountry(cities, 'France')); // Affiche 0
 
 /**
  * Dénombre la population totale d'un pays à partir des données.
- * Prend en paramètre la liste et l'élément recherché.
+ * Prend en paramètre les données et le nom du pays concerné.
  * Retourne le nombre d'individus (type Number)
  */
 function getTotalPopulation(list, countryName){
 
-    const countryNameSTD = standardizeStrData(countryName);
-    const indexList = getAllMatchingRecords(list, 'country', countryNameSTD);
+    const indexList = getAllMatchingRecords(list, 'country', countryName);
     
     let sum = 0;
     indexList.forEach(index => {
@@ -508,65 +484,17 @@ function getTotalPopulation(list, countryName){
 //console.log(getTotalPopulation(cities, 'Canada')); // Affiche 5219553
 //console.log(getTotalPopulation(cities, 'France')); // Affiche 0
 
-
-/*
-// Exemple intéressant : décomposer un objet
-const traveler = [
-    { description: 'Senior', Amount: 50 },
-    { description: 'Senior', Amount: 50 },
-    { description: 'Adult', Amount: 75 },
-    { description: 'Child', Amount: 35 },
-    { description: 'Infant', Amount: 25 },
-  ];
-  
-console.log(traveler.reduce((n, {Amount}) => n + Amount, 0));
-*/
-
-/**
- * Repère la valeur maximale d'une propriété dans un ensemble de valeurs données
- * Prend en paramètre une liste (les données), une liste d'enregistrements et 
- * le nom de la propriété pour laquelle les valeurs sont comparées.
- * Retourne la valeur la plus élevée parmi les valeurs comparées (type Number)
- */
-function findMaxValue(list, indexList, propertyName){
-
-    let maxValue = list[indexList[0]][propertyName];
-
-    indexList.forEach(item =>{
-        if(list[item][propertyName] > maxValue){
-            maxValue = list[item][propertyName]
-        }
-    })
-    return maxValue;
-}
-//console.log(findMaxValue(cities, [0,1,2], 'population'))// Affiche 2794356
-
-/**
- * Recherche une valeur pour une propriété donnée selon un couple clé-valeur
- */
-
-function findByKeyValuePair(list, requestedDataPropertyName, refDataPropertyName, refDataPropertyValue){
-    
-    const result = list.find(item => item[refDataPropertyName] === refDataPropertyValue);
-    //console.log(result[requestedDataPropertyName])
-    return result[requestedDataPropertyName];
-    
-}
-//console.log(findByKeyValuePair(cities, 'name', 'population', 2794356));
-
 /**
  * Recherche la ville associée à une population donnée.
- * Prend en paramètre la liste et l'élément recherché.
+ * Prend en paramètre les données et le nom du pays associé à la ville recherchée.
  * Retourne le nom de la ville (type String)
  */
 function findCityByPop(list, countryName){
 
-    const countryNameSTD = standardizeStrData(countryName);
-    const indexList = getAllMatchingRecords(list, 'country', countryNameSTD);
+    const indexList = getAllMatchingRecords(list, 'country', countryName);
     
     if(indexList.length !== 0){
         const maxPop = findMaxValue(list, indexList, 'population');
-        //console.log(maxPop)
         const city = findByKeyValuePair(list, 'name', 'population', maxPop);
         return city;
     }
@@ -575,11 +503,14 @@ function findCityByPop(list, countryName){
 //console.log(findCityByPop(cities, 'Canada')); // Affiche Toronto
 //console.log(findCityByPop(cities, 'France')); // Affiche aucune ville trouvée
 
+/**
+ * Recherche le pays d'origine d'une personne.
+ * Prend en paramètre les données (2 listes d'enreg)
+ * Retourne le résultat (nom du pays ou msg: aucune personne trouvée, type String)
+ */
 function findCountryByPersonName(list1, list2, personName){
-    //console.log(personName)
 
-    const personNameSTD = standardizeStrData(personName);
-    const indexList = getAllMatchingRecords(list2, 'name', personNameSTD);
+    const indexList = getAllMatchingRecords(list2, 'name', personName);
 
     if(indexList.length !== 0){
         if(indexList.length === 1){
@@ -590,14 +521,19 @@ function findCountryByPersonName(list1, list2, personName){
     }
     return 'aucune personne trouvée';
 }
-//console.log(findCountryByPersonName(cities, persons, 'Djaffar Bensetti'));
-//console.log(findCountryByPersonName(cities, persons, 'dj Pope'));
-//console.log(findCountryByPersonName(cities, persons, 'Marie Antoinette'));
+//console.log(findCountryByPersonName(cities, persons, 'Djaffar Bensetti')); // Affiche Algerie
+//console.log(findCountryByPersonName(cities, persons, 'dj Pope')); // Affiche Colombie
+//console.log(findCountryByPersonName(cities, persons, 'Marie Antoinette')); // Affiche aucune personne trouvée
 
+
+/**
+ * Recherche le nombre de personnes provenant d'un pays donné.
+ * Prend en paramètre les données (2 listes d'enreg).
+ * Retourne le résultat (nombre de personnes ou 0, type Number)
+ */
 function findPersonCountByCountry(list1, list2, countryName){
     
-    const countryNameSTD = standardizeStrData(countryName);
-    const indexList = getAllMatchingRecords(list1, 'country', countryNameSTD);
+    const indexList = getAllMatchingRecords(list1, 'country', countryName);
 
     if(indexList.length !== 0){
         let sum = 0;
@@ -612,7 +548,7 @@ function findPersonCountByCountry(list1, list2, countryName){
     }
     return 0;
 }
-//console.log(findPersonCountByCountry(cities, persons, 'Canada'));
-//console.log(findPersonCountByCountry(cities, persons, 'Mexique'));
-//console.log(findPersonCountByCountry(cities, persons, 'France'));
+//console.log(findPersonCountByCountry(cities, persons, 'Canada')); // Affiche 3
+//console.log(findPersonCountByCountry(cities, persons, 'Mexique')); // Affiche 0
+//console.log(findPersonCountByCountry(cities, persons, 'France')); // Affiche 0
 
