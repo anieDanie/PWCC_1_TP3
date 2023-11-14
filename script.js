@@ -1,25 +1,9 @@
 /**
- * TP3
- * Dernière mise-à-jour : 12/11/ 15:23
- * EXO 1 à 9 : terminés
- * 
- * Remarques:
- *      (1) Fonction standardizeStrData n'existe plus dans cette version: 
- *      c'est la méthode getAllMatchingRecords() qui définit le
- *      format pour comparer les données des BD et les entrées saisies
- *      par l'utilisateur: on compare des strings, en lettres majuscules,
- *      lorsqu'il s'agit de mots.
- *      (2) La recherche dans une liste se fait principalement par la biais
- *      du numéro de l'enregistrement (indice de l'objet dans une liste),
- *      lorsqu'il s'agit d'obtenir la valeur d'une propriété, via la fonction
- *      findAt(). Il est aussi possible de faire une recherche par le biais
- *      d'une paire clé-valeur dans une liste, via la fonction findByKeyValuePair(). 
- *      (3) À faire : tests    
+ * Programme principal TP3
+ * Dernière mise-à-jour : 13-11-2023 
  */
 
 // DONNÉES
-
-// Les villes
 
 const cities = [
 
@@ -37,11 +21,6 @@ const cities = [
 
     {"name": "Mexico", "population": 9209944, "country": "Mexique"}
 ]
-//console.log(cities)
-//console.log(cities[0])
-//console.log(cities[0].name)
-
-// Les personnes
 
 const persons = [
     {"name": "Maurice Vachon", "city": "Montreal"},
@@ -62,7 +41,7 @@ document.querySelector('#main-title').innerHTML = 'Travail Pratique III'
 document.getElementById('button-1').addEventListener('click', exo2);
 
 function getMessageForExo2(input){
-    // bloc de validation de la valeur saisie: un entier naturel (n ­­>= 0)
+    // (n ­­>= 0)
     if(isNaturalNumber(input)){
         return '' + sumOfFiniteSequenceOfTerms(Number(input));
     }
@@ -73,19 +52,12 @@ function exo2(){
     const input = document.getElementById('input-1').value;
     document.getElementById('result-box-1').innerHTML = getMessageForExo2(input);
 }
-// TESTS UNITAIRES INTERFACE
-// 3        -> 6
-// 10       -> 55
-// 0        -> 0 (condition: entier naturel)
-// 'allo'   -> entrée invalide
-// -12      -> entrée invalide
-
 
 // 3 - Sum de tous les nombres de 1 à n qui sont divisibles par k
 document.getElementById('button-2').addEventListener('click', exo3);
 
 function getMessageForExo3(input1, input2){
-    // bloc de validation des valeurs saisies: deux entiers strictement positifs (n ­­> 0)
+    // (n ­­> 0)
     if(isPositiveInteger(input1) && isPositiveInteger(input2)){
         return '' + sumOfMultiplesInFiniteSequenceOfTerms(Number(input2), Number(input1), divides);
     } 
@@ -98,20 +70,12 @@ function exo3(){
 
     document.getElementById('result-box-2').innerHTML = getMessageForExo3(input1, input2);
 }
-// TESTS UNITAIRES INTERFACE
-// 1 et 3       -> 6
-// 2  et 10     -> 30
-// allo et 10   -> Entrée invalide
-//-12 et 10     -> Entrée invalide
-//10 et allo    -> Entrée invalide
-//12 et -10     -> Entrée invalide
 
 // 4 - Pays d'une ville
 document.getElementById('button-3').addEventListener('click', exo4);
 
 function getMessageForExo4(input){
 
-    // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
     if(input === ''){
         return 'chaîne vide'
     } else if(containsOnlyLetters(input)){
@@ -123,16 +87,12 @@ function exo4(){
     const input = document.getElementById('input-3').value;
     document.getElementById('result-box-3').innerHTML = getMessageForExo4(input);
 }
-// TESTS UNITAIRES INTERFACE
-// Oran     -> Algerie
-// Paris    -> ville non trouvée
 
 // 5 - Nombre de villes d'un pays
 document.getElementById('button-4').addEventListener('click', exo5);
 
 function getMessageForExo5(input){
 
-    // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
     if(input === ''){
         return 'chaîne vide'
     } else if(containsOnlyLetters(input)){
@@ -144,16 +104,12 @@ function exo5(){
     const input = document.getElementById('input-4').value;
     document.getElementById('result-box-4').innerHTML = getMessageForExo5(input);
 }
-// TESTS UNITAIRES INTERFACE
-//Canada    -­­> 3
-//France    -> 0
 
 // 6 - Population d'un pays
 document.getElementById('button-5').addEventListener('click', exo6);
 
 function getMessageForExo6(input){
 
-        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
         if(input === ''){
             return 'chaîne vide'
         } else if(containsOnlyLetters(input)){
@@ -165,16 +121,12 @@ function exo6(){
     const input = document.getElementById('input-1').value;
     document.getElementById('result-box-1').innerHTML = getMessageForExo6(input);
 }
-// TESTS UNITAIRES INTERFACE
-// Canada   -­> 5219553
-// France   -> 0
 
 // 7 - Plus grande ville d'un pays
 document.getElementById('button-6').addEventListener('click', exo7);
 
 function getMessageForExo7(input){
 
-        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
         if(input === ''){
             return 'chaîne vide'
         } else if(containsOnlyLetters(input)){
@@ -186,16 +138,12 @@ function exo7(){
     const input = document.getElementById('input-2').value;
     document.getElementById('result-box-2').innerHTML = getMessageForExo7(input);
 }
-// TESTS UNITAIRES INTERFACE
-// Canada   -> Toronto
-// France   -> aucune ville trouvée
 
 // 8 - Pays d'origine
 document.getElementById('button-7').addEventListener('click', exo8);
 
 function getMessageForExo8(input){
-        
-        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+
         if(input === ''){
             return 'chaîne vide'
         } else if(containsOnlyLetters(input)){
@@ -207,17 +155,12 @@ function exo8(){
     const input = document.getElementById('input-3').value;
     document.getElementById('result-box-3').innerHTML = getMessageForExo8(input);
 }
-// TESTS UNITAIRES INTERFACE
-//Djaffar Bensetti  -> Algerie
-//Marie Antoinette  -> aucune personne trouvée
 
 // 9 - Nombre de personnes dans un pays
 document.getElementById('button-8').addEventListener('click', exo9);
 
 function getMessageForExo9(input){
-    console.log(input)
-        
-        // Valider s'il s'agit d'une chaîne vide ou d'une chaîne de lettres (mots)
+
         if(input === ''){
             return 'chaîne vide'
         } else if(containsOnlyLetters(input)){
@@ -229,10 +172,6 @@ function exo9(){
     const input = document.getElementById('input-4').value;
     document.getElementById('result-box-4').innerHTML = getMessageForExo9(input);
 }
-// TESTS UNITAIRES INTERFACE
-// Canada   -> 3
-// Mexique  -> 0
-// France   -> 0
 
 // FONCTIONS pour logique application
 
@@ -252,12 +191,6 @@ function isNumeric(str) {
 function isNaturalNumber(str){
     return isNumeric(str) && Number.isInteger(Number(str)) && Number(str)>=0;
 }
-//console.log(isNaturalNumber('allo')); // false
-//console.log(isNaturalNumber(3.5)); // false
-//console.log(isNaturalNumber(-12)); // false
-//console.log(isNaturalNumber(3)); // true
-//console.log(isNaturalNumber(0)); // true
-
 
 /**
  * Valide si une chaîne de caractères est un nombre supérieur à 0.
@@ -266,39 +199,15 @@ function isNaturalNumber(str){
 function isPositiveInteger(str){
     return isNumeric(str) && Number.isInteger(Number(str)) && Number(str)> 0;
 }
-//console.log(isPositiveInteger('allo')); // false
-//console.log(isPositiveInteger(3.5)); // false
-//console.log(isPositiveInteger(-12)); // false
-//console.log(isPositiveInteger(3)); // true
-//console.log(isPositiveInteger(0)); // false
 
 /**
  * Valide si un nombre est un diviseur d'un autre nombre à partir du reste
  * d'une division entière.
- * Prend en paramètre 2 nombres. Retourne un booléen
- * Nota: cette fonction ne contrôle pas la division par 0 ni le fait que le module
- * doit être entre 0 et (divisor-1). 
+ * Prend en paramètre 2 nombres. Retourne un booléen 
  */
 function divides(divisor, dividend){
-    //console.log(dividend % divisor);
     return dividend % divisor === 0;
 }
-//console.log(divides(1,3)); // affiche true
-//console.log(divides(1,-3)); // affiche true : reste = -0
-//console.log(divides(-1,3)); // affiche true : reste = 0
-
-//console.log(divides(4,13)); // affiche false
-//console.log(divides(0,13)); // affiche false : division par 0 - NaN
-//console.log(divides(4,0)); // affiche true
-
-// l'opérateur % ne donne pas le résultat d'une opération modulo sur des valeurs
-// négatives (ne tient pas compte du signe de la valeur)
-
-// 5 mod 12 = 5
-//console.log(divides(12,5)); // affiche false : reste = 5
-
-// -5 mod 12 = -7
-//console.log(divides(12,-5)); // affiche false : reste = -5 (ne donne pas classe d'équivalence de mod12)
 
 /**
  * Calcule la somme d'une suite de termes (suite finie) qui se termine
@@ -315,11 +224,6 @@ function sumOfFiniteSequenceOfTerms(n){
         return n
     }
 }
-//console.log(sumOfFiniteSequenceOfTerms(3)); // Affiche 6
-//console.log(sumOfFiniteSequenceOfTerms(10)); // Affiche 55
-//console.log(sumOfFiniteSequenceOfTerms(0)); // Affiche 0
-//console.log(sumOfFiniteSequenceOfTerms(-12)); // Affiche -12 (directement dans le else)
-
 
 /**
  * calcule la somme des multiples d'un entier, qui sont des termes
@@ -338,10 +242,6 @@ function sumOfMultiplesInFiniteSequenceOfTerms(n, d, selectFunc){
     }
     return s;
 }
-//console.log(sumOfMultiplesInFiniteSequenceOfTerms(3,1, divides)) // affiche 6
-//console.log(sumOfMultiplesInFiniteSequenceOfTerms(10,2, divides)) // affiche 30
-//console.log(sumOfMultiplesInFiniteSequenceOfTerms(-12,10, divides)) // affiche 0 (on entre pas dans la boucle for)
-//console.log(sumOfMultiplesInFiniteSequenceOfTerms(12,-10, divides)) // affiche 10 (seulement 10 est divisible par -10)
 
 /**
  * Valide si une chaîne de caractères ne contient que des caractères qui forment des mots.
@@ -377,13 +277,6 @@ function getAllMatchingRecords(list, propertyName, searchedElement){
     }
     return indexList;
 }
-//console.log(getAllMatchingRecords(cities, 'name', 'Oran')); // affiche Array [ 6 ]
-//console.log(getAllMatchingRecords(cities, 'population', 8034649)); // affiche Array [ 3, 4 ]
-//console.log(getAllMatchingRecords(cities, 'country', 'Canada')); // affiche Array(3) [ 0, 1, 2 ]
-//console.log(getAllMatchingRecords(persons, 'name', 'DJ Pope')); // affiche Array [ 4 ]
-//console.log(getAllMatchingRecords(persons, 'city', 'Vancouver')); // affiche Array [ 1, 2 ]
-//console.log(getAllMatchingRecords(cities, 'country', '   Canada   ')); // affiche Array(3) [ 0, 1, 2 ]
-
 
 /**
  * Recherche une valeur pour une propriété donnée selon le numéro
@@ -394,7 +287,6 @@ function getAllMatchingRecords(list, propertyName, searchedElement){
 function findAt(list, index, propertyName){
     return list[index][propertyName];
 }
-//console.log(findAt(cities, 6, 'country')) // Affiche Algerie
 
 /**
  * Recherche une valeur pour une propriété donnée selon un couple clé-valeur.
@@ -402,15 +294,11 @@ function findAt(list, index, propertyName){
  * la clé et la valeur associées à la valeur recherchée.
  * Retourne la valeur (type Number ou String, selon le type de la donnée dans la BD)
  */
-
 function findByKeyValuePair(list, requestedDataPropertyName, refDataPropertyName, refDataPropertyValue){
     
     const result = list.find(item => item[refDataPropertyName] === refDataPropertyValue);
-    //console.log(result[requestedDataPropertyName])
-    return result[requestedDataPropertyName];
-    
+    return result[requestedDataPropertyName];    
 }
-//console.log(findByKeyValuePair(cities, 'name', 'population', 2794356));
 
 /**
  * Repère la valeur maximale d'une propriété dans un ensemble de valeurs.
@@ -424,12 +312,11 @@ function findMaxValue(list, indexList, propertyName){
 
     indexList.forEach((index) =>{
         if(list[index][propertyName] > maxValue){
-            maxValue = list[index][propertyName]
+            maxValue = list[index][propertyName];
         }
     })
     return maxValue;
 }
-//console.log(findMaxValue(cities, [0,1,2], 'population'))// Affiche 2794356
 
 // FONCTIONS POUR REQUÊTES DE RECHERCHE ET DE TRAITEMENT DE DONNÉES (dans les listes)
 
@@ -450,8 +337,6 @@ function findCountryByCityName(list, cityName){
         return `plus d'un enregistrement pour la ville spécifiée`
     }
 }
-//console.log(findCountryByCityName(cities, 'Oran')); // Affiche Algerie
-//console.log(findCountryByCityName(cities, 'Paris')); // Affiche Algerie
 
 /**
  * Énumère les villes associées au nom d'un pays dans les données.
@@ -463,8 +348,6 @@ function findCityCountByCountry(list, countryName){
     const indexList = getAllMatchingRecords(list, 'country', countryName);
     return indexList.length;
 }
-//console.log(findCityCountByCountry(cities, 'Canada')); // Affiche 3
-//console.log(findCityCountByCountry(cities, 'France')); // Affiche 0
 
 /**
  * Dénombre la population totale d'un pays à partir des données.
@@ -476,13 +359,11 @@ function getTotalPopulation(list, countryName){
     const indexList = getAllMatchingRecords(list, 'country', countryName);
     
     let sum = 0;
-    indexList.forEach(index => {
+    indexList.forEach((index) => {
         sum += list[index].population;
     })
     return sum;    
 }
-//console.log(getTotalPopulation(cities, 'Canada')); // Affiche 5219553
-//console.log(getTotalPopulation(cities, 'France')); // Affiche 0
 
 /**
  * Recherche la ville associée à une population donnée.
@@ -500,8 +381,6 @@ function findCityByPop(list, countryName){
     }
     return 'aucune ville trouvée'
 }
-//console.log(findCityByPop(cities, 'Canada')); // Affiche Toronto
-//console.log(findCityByPop(cities, 'France')); // Affiche aucune ville trouvée
 
 /**
  * Recherche le pays d'origine d'une personne.
@@ -521,10 +400,6 @@ function findCountryByPersonName(list1, list2, personName){
     }
     return 'aucune personne trouvée';
 }
-//console.log(findCountryByPersonName(cities, persons, 'Djaffar Bensetti')); // Affiche Algerie
-//console.log(findCountryByPersonName(cities, persons, 'dj Pope')); // Affiche Colombie
-//console.log(findCountryByPersonName(cities, persons, 'Marie Antoinette')); // Affiche aucune personne trouvée
-
 
 /**
  * Recherche le nombre de personnes provenant d'un pays donné.
@@ -548,7 +423,3 @@ function findPersonCountByCountry(list1, list2, countryName){
     }
     return 0;
 }
-//console.log(findPersonCountByCountry(cities, persons, 'Canada')); // Affiche 3
-//console.log(findPersonCountByCountry(cities, persons, 'Mexique')); // Affiche 0
-//console.log(findPersonCountByCountry(cities, persons, 'France')); // Affiche 0
-
